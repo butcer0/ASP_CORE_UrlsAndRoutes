@@ -26,10 +26,59 @@ namespace UrlsAndRoutes
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
+                //Erik - 5/11/2018 Inline-constraint to only match first segment when begins with 'H'. Default applied before constraint evaluated
                 routes.MapRoute(
+                   name: "MyRoute",
+                   template: "{controller:regex(^H.*)=Home}/{action=Index}/{id?}/{*catchall}"
+                   );
+
+                //Erik - 5/11/2018 Segment-Level constraints -> defaults required to be written as separate arguments along with constraints
+                #region Depricated - 5/11/2018 Use Inline-Constraints
+
+                //routes.MapRoute(
+                //               name: "MyRoute",
+                //               template: "{controller}/{action}/{id?}/{*catchall}",
+                //               defaults: new { controller = "Home", action = "Index" },
+                //               constraints: new
+                //               {
+                //                   controller = new Microsoft.AspNetCore.Routing.Constraints.RegexRouteConstraint("^H.*")
+                //               });
+
+                #endregion
+
+
+                //Erik - 5/11/2018 catchall (either in <RouteData> or method parameter) will pick up anything passed 3rd segment together
+                #region Depricated - 5/11/2018 Introduced Constraints
+                /*
+				           
+                // ex: .../Customer/List/All/Delete/Perm -> id = "All", catchall = "Delete/Perm"
+                routes.MapRoute(
+                   name: "MyRoute",
+                   template: "{controller=Home}/{action=Index}/{id?}/{*catchall}"
+                   );
+    
+				*/
+                #endregion
+
+                //Erik - 5/11/2018 id can be picked up by controller method either in <RouteData> or as parameter named 'id'
+                #region Depricated - 5/11/2018 Introduced variable length catchall
+                /*
+				
+                routes.MapRoute(
+                   name: "MyRoute",
+                   template: "{controller=Home}/{action=Index}/{id?}"
+                   );
+				*/
+                #endregion
+
+                #region Depricated - 5/11/2018 Introduced Optional Custom URL Segment
+                /*
+				 routes.MapRoute(
                     name: "MyRoute",
                     template: "{controller=Home}/{action=Index}/{id=DefaultId}"
                     );
+				*/
+                #endregion
 
                 #region Depricated - 5/11/2018 Introduced Custom Segment Variables
                 /*
