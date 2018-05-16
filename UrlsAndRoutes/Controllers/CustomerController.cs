@@ -14,7 +14,13 @@ namespace UrlsAndRoutes.Controllers
     [Route("app/[controller]/actions/[action]/{id?}")]
     */
     #endregion
-    [Route("app/[controller]/actions/[action]/{id:weekday?}")]
+
+    #region Depricated - 5/16/2018 {*catchall} Removed
+    /*
+    [Route("app/[controller]/actions/[action]/{id:weekday?}/{*catchall}")]
+    */
+    #endregion
+    [Route("app/[controller]/actions/[action]/{id:weekday?}/{*catchall}")]
     public class CustomerController : Controller
     {
         #region Depricated - 5/15/2018 Using direct Route isn't usually very useful, only route you can get to method and replaces and prevents previous path
