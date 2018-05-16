@@ -27,6 +27,7 @@ namespace UrlsAndRoutes.Controllers
             };
             //Erik - 5/11/2018 If no value supplied on optional custom segment, value is passed as null
             r.Data["Id"] = id ?? "<no value>";
+            r.Data["Url"] = Url.Action("CustomVariable", "Home", new { id = 200 });
             return View("Result", r);
         }
 

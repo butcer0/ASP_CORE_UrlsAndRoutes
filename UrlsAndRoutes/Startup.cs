@@ -18,7 +18,12 @@ namespace UrlsAndRoutes
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<RouteOptions>(options => options.ConstraintMap.Add("weekday", typeof(WeekDayConstraint)));
+            services.Configure<RouteOptions>(options => {
+                options.ConstraintMap.Add("weekday", typeof(WeekDayConstraint));
+                options.LowercaseUrls = true;
+                options.AppendTrailingSlash = true;
+
+                });
             services.AddMvc();
         }
 
@@ -30,9 +35,32 @@ namespace UrlsAndRoutes
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
+                //Erik - 5/16/2018 Introduce Custom Route class, this ex to support Legacy Routes 
+                routes.Routes.Add(new LegacyRoute(
+                    app.ApplicationServices,
+                    "/articles/Windows_3.1_Overview.html",
+                    "/old/.NET_1.0_Class_Library" ));
+
+                //Erik - 5/16/2018 Navigates to /Home/{action} without having the controller in the URL
+                // basically when only one segment is provided or if just an action from asp-action will only route to Home
+
+                #region Depricated - 5/16/2018 Removed for only default
+                /*
+				 routes.MapRoute(
+                    name: "NewRoute",
+                    template: "App/Do{action}",
+                    defaults: new { controller = "Home" });
+				*/
+                #endregion
+
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "out",
+                    template: "outbount/{controller=Home}/{action=Index}");
             });
 
             #region Depricated - 5/15/2018 Converted back to Default Routing for Attribute Routing
