@@ -35,6 +35,10 @@ namespace UrlsAndRoutes
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}");
+
                 //Erik - 5/16/2018 Introduce Custom Route class, this ex to support Legacy Routes 
                 routes.Routes.Add(new LegacyRoute(
                     app.ApplicationServices,
